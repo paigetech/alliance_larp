@@ -7,13 +7,17 @@ router.get('/', function(req, res) {
       res.redirect('../login');
   } else {
 
-  res.render('index', { 
-    title: 'App',
-    name: req.session.name
-  });
-  console.log("session " + req.session.name);
-  console.log("session " + req.session.email);
-  console.log("session " + req.session.roles);
+    if (req.session.roles.indexOf('admin')) {
+      var admin = true;
+    }
+    res.render('index', { 
+      title: 'App',
+      name: req.session.name,
+      admin: true
+    });
+    console.log("session " + req.session.name);
+    console.log("session " + req.session.email);
+    console.log("session " + req.session.roles);
   }
 });
 

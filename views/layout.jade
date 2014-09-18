@@ -2,7 +2,29 @@ doctype html
 html
   head
     title= title
-    link(rel='stylesheet', href='//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', href='/bootstrap/css/bootstrap-responsive.min.css')
     link(rel='stylesheet', href='/stylesheets/style.css')
+    script(src='http://ajax.googleapis.com/ajax/libs/jquery/1/jquery.min.js')
+    script(src='/bootstrap/js/bootstrap.min.js')
   body
+    div.navbar.navbar-fixed-top
+      div.navbar-inner
+        div.container
+          a(data-toggle='collapse',data-target='.nav-collapse').btn.btn-navbar
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a(href='/').brand #{title}
+            div.nav-collapse
+              ul.nav
+                li
+                  a(href='/signup') Signup
+                li
+                  a(href='/logout') Logout
+                li
+                  a(href='/login') Login
+                if admin
+                  li
+                    a(href='/admin') Admin
     block content
