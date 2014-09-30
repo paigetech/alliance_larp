@@ -1,14 +1,14 @@
 var express = require('express');
 var router = express.Router();
 
-/* GET home page. */
+/* GET admin page. */
 router.get('/', function(req, res) {
-    if (req.session.roles.indexOf('admin')) {
-      var admin = true;
+    if (!req.session.loggedIn) {
+      res.redirect('../login');
+  } else {
     res.render('admin', { 
-      title: 'App',
+      title: 'Admin',
       name: req.session.name,
-      admin: true
     });
   }
 });

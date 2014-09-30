@@ -7,9 +7,6 @@ router.get('/', function(req, res) {
       res.redirect('../login');
   } else {
 
-    if (req.session.roles.indexOf('admin')) {
-      var admin = true;
-    }
     res.render('index', { 
       title: 'App',
       name: req.session.name,
