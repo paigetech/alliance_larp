@@ -14,7 +14,7 @@ describe('header', function() {
   });
 
   // load the contact page
-  before(function(done) {
+  beforeEach(function(done) {
     this.browser.visit('/', done);
   });
 

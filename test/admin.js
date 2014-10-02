@@ -1,17 +1,19 @@
 process.env.NODE_ENV = 'test';
 var app = require('../app');
 var assert = require('assert');
+var chai = require('chai');
+var expect = chai.expect;
 var Browser = require('zombie');
  
 describe('admin page', function() {
   before(function() {
-    this.server = app.listen(3000);
+    this.server = app.listen(3001);
     // initialize the browser using the same port as the test application
-    this.browser = new Browser({ site: 'http://localhost:3000' });
+    this.browser = new Browser({ site: 'http://localhost:3001' });
   });
 
   // load the admin page
-  before(function(done) {
+  beforeEach(function(done) {
     this.browser.visit('/admin', done);
   });
 
@@ -20,9 +22,25 @@ describe('admin page', function() {
       assert.equal(this.browser.text('.panel-heading'), 'Login');
     });
 
+  it('should open an admin page for admin users', function(done){
+    var browser = this.browser;
+    browser.visit('/login',function() {
+      browser.
+          fill("login", "admin").
+          fill("password", "password").
+          pressButton("Login", function() {
+            assert.ok(browser.success);
+            browser.visit('/admin', function(){
+              assert.equal(browser.text('h1'), "Admin");
+              done();
+            });
+          });
+    });
+  });
 
   after(function(done) {
     this.server.close(done);
   });
+
 
 });
