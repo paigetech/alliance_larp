@@ -22,3 +22,6 @@ body
                 a(href='/logout') Logout
               li
                 a(href='/login') Login
+              if session.admin
+                li.admin
+                  a(href='/admin') Admin

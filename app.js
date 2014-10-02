@@ -35,6 +35,10 @@ app.use(cookieSession({
   secret: 'this is my super secret string'
 }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(function(req, res, next){
+      res.locals.session = req.session;
+          next();
+});
 
 app.use('/', routes);
 app.use('/users', users);
