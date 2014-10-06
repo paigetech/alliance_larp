@@ -6,40 +6,52 @@ var bears = nano.db.use('bears');
 router.get('/', function(req, res) {
   bears.list(function(err, body) {
     var list = [];
-    console.log(body);
     body.rows.forEach(function(doc) {
-    console.log(doc.id);
-    list.push(doc.id);
+      list.push(doc.id);
     });
-
     res.json(list);
-    
     });
 });
 
-router.post('/', function(req, res) {
+router.post('/', function(req, res, next) {
   bears.insert({color: req.body.color}, req.body.name, function(err, body) {
     if (err) {
-      console.log('[bears.insert]', err.message);
-      return;
+      return next(err);
     }
     console.log(body);
     res.json({ message: req.body.name });
     });
 });
 
-router.put('/', function(req, res) {
-  bears.update = function(obj, key, cb) {
+router.put('/:bear_id', function(req, res, next) {
+  bears.update = function(obj, key, callback) {
     var db = this;
-    db.get(key, function(err, existing) {
+    db.get(key, function (err, existing) { 
       if(!err) obj._rev = existing._rev;
-      db.insert(obj, key, cb);
+      db.insert(obj, key, callback);
     });
   }
-  bears.update({color: req.body.color}, req.body.name, function(err, res) {
-    if (err) return console.log('no update');
-    console.log('updated');
+   
+  bears.update({color: req.body.color}, req.params.bear_id, function(err, body, header) {
+    if (err) return next(err);
+    res.send(200, { message: "updated " + req.params.bear_id});
   });
 });
+
+router.delete('/:bear_id', function(req, res, next) {
+    console.log("deleting..." + req.params.bear_id);
+    bears.get(req.params.bear_id, function(err, body, header) {
+      if (err) {
+        return next(err);
+      }
+        bears.destroy(req.params.bear_id, body._rev, function(err, body, header) {
+          if (err) {
+            return next(err);
+          }
+            res.send(200, { message: "deleted " + req.params.bear_id});
+        });
+    });
+});
+
 
 module.exports = router;
