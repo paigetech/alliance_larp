@@ -19,6 +19,7 @@ var app = express();
 var routes = require('./routes/');
 var users = require('./routes/users');
 var admin = require('./routes/admin');
+var registration = require('./routes/registration');
 var bears = require('./routes/api/bears');
 var config = require('./config.js');
 var Lockit = require('lockit');
@@ -43,6 +44,7 @@ app.use(function(req, res, next){
 app.use('/', routes);
 app.use('/users', users);
 app.use('/admin', admin);
+app.use('/registration', registration);
 app.use('/api/bears', bears);
 
 // private dummy route
