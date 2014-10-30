@@ -1,4 +1,19 @@
 doctype html
 html
   include ./includes/head.jade
+  - function isEmptyObject(obj) {
+  -      var name;
+  -      for (name in obj) {
+  -        return false;
+  -      }
+  -      return true;
+  -    }
+  div.flash
+    - if (isEmptyObject(errors) == false)
+      p.errorMessage= "The following errors occurred:"
+      ul  
+        - each error in errors
+          li.error= error.msg
+    if message
+      p.message #{message}
   block content

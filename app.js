@@ -10,6 +10,8 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var cookieSession = require('cookie-session');
 var bodyParser = require('body-parser');
+var expressValidator = require('express-validator');
+var flash = require('connect-flash');
 var utils = require('lockit-utils');
 var nano = require('nano')('http://localhost:5984');
 
@@ -31,11 +33,13 @@ app.use(favicon(__dirname + '/public/favicon.ico'));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use(expressValidator());
 app.use(cookieParser());
 app.use(cookieSession({
   secret: 'this is my super secret string'
 }));
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(flash());
 app.use(function(req, res, next){
       res.locals.session = req.session;
           next();
